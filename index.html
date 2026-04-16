@@ -1423,6 +1423,227 @@ function showToast(msg){
 
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 
+
+// ── GitHub persistence helpers ──
+function buildMonthNav(){
+  const nav = document.getElementById('monthNav');
+  if(!nav) return;
+  nav.innerHTML = '';
+  MONTHS_CONFIG.forEach((mc,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'month-btn';
+    btn.textContent = MONTH_NAMES[mc.month-1].substring(0,3);
+    btn.onclick = ()=>scrollToMonth(i);
+    btn.id = 'mnav' + i;
+    nav.appendChild(btn);
+  });
+}
+
+function utf8ToBase64(str){
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  const chunkSize = 0x8000;
+  for(let i=0;i<bytes.length;i+=chunkSize){
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
+function jsonForInlineScript(value){
+  return JSON.stringify(value).replace(/<\//g, '<\\/');
+}
+
+function collectCalendarState(){
+  return {
+    posts: POSTS,
+    planData: PLAN_DATA,
+    monthConfig: MONTHS_CONFIG.map(m => ({
+      month: m.month,
+      notes: m.notes || '',
+      special: m.special || {}
+    })),
+    header: {
+      client: document.getElementById('hdrClient')?.innerHTML || '',
+      year: document.getElementById('hdrYear')?.innerHTML || '',
+      sub: document.getElementById('hdrSub')?.innerHTML || ''
+    }
+  };
+}
+
+function applyCalendarState(state){
+  if(!state || typeof state !== 'object') return;
+
+  if(Array.isArray(state.posts)){
+    POSTS = state.posts.map(p => ({
+      ...p,
+      imgs: p.imgs || [],
+      caption: p.caption || '',
+      descricao: p.descricao || '',
+      imgObs: p.imgObs || '',
+      roteiro: p.roteiro || '',
+      videoLink: p.videoLink || '',
+      slides: p.slides || '',
+      slidesNum: p.slidesNum || '',
+      postado: !!p.postado
+    }));
+  }
+
+  if(state.planData && typeof state.planData === 'object'){
+    PLAN_DATA = state.planData;
+  }
+
+  if(Array.isArray(state.monthConfig)){
+    state.monthConfig.forEach(saved => {
+      const found = MONTHS_CONFIG.find(m => m.month === saved.month);
+      if(found){
+        if(typeof saved.notes === 'string') found.notes = saved.notes;
+        if(saved.special && typeof saved.special === 'object') found.special = saved.special;
+      }
+    });
+  }
+
+  if(state.header){
+    if(typeof state.header.client === 'string' && document.getElementById('hdrClient')){
+      document.getElementById('hdrClient').innerHTML = state.header.client;
+    }
+    if(typeof state.header.year === 'string' && document.getElementById('hdrYear')){
+      document.getElementById('hdrYear').innerHTML = state.header.year;
+    }
+    if(typeof state.header.sub === 'string' && document.getElementById('hdrSub')){
+      document.getElementById('hdrSub').innerHTML = state.header.sub;
+    }
+  }
+}
+
+function upsertPersistedStatePatch(html, state){
+  const patch = `
+<script id="persisted-calendar-state">
+window.__PERSISTED_CALENDAR_STATE__ = ${jsonForInlineScript(state)};
+if(typeof applyCalendarState === 'function'){ applyCalendarState(window.__PERSISTED_CALENDAR_STATE__); }
+<\/script>
+`;
+  if(/<script id="persisted-calendar-state">[\s\S]*?<\/script>/i.test(html)){
+    return html.replace(/<script id="persisted-calendar-state">[\s\S]*?<\/script>/i, patch.trim());
+  }
+  return html.replace(/<\/body>/i, patch + '</body>');
+}
+
+function buildPersistentHtml(){
+  const client = document.getElementById('hdrClient')?.innerHTML || '';
+  const year = document.getElementById('hdrYear')?.innerHTML || '';
+  const sub = document.getElementById('hdrSub')?.innerHTML || '';
+
+  let src = document.documentElement.outerHTML;
+
+  src = src.replace(/(<span contenteditable="true" id="hdrClient"[^>]*>)([\s\S]*?)(<\/span>)/, `$1${client}$3`);
+  src = src.replace(/(<em contenteditable="true" id="hdrYear"[^>]*>)([\s\S]*?)(<\/em>)/, `$1${year}$3`);
+  src = src.replace(/(<span class="sub" contenteditable="true" id="hdrSub"[^>]*>)([\s\S]*?)(<\/span>)/, `$1${sub}$3`);
+
+  src = src.replace(/function buildMonthNav\(\)\{[\s\S]*?\n\}/, `function buildMonthNav(){
+  const nav = document.getElementById('monthNav');
+  if(!nav) return;
+  nav.innerHTML = '';
+  MONTHS_CONFIG.forEach((mc,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'month-btn';
+    btn.textContent = MONTH_NAMES[mc.month-1].substring(0,3);
+    btn.onclick = ()=>scrollToMonth(i);
+    btn.id = 'mnav' + i;
+    nav.appendChild(btn);
+  });
+}`);
+
+  src = upsertPersistedStatePatch(src, collectCalendarState());
+  return src;
+}
+
+function resetGitHubToken(){
+  try{
+    localStorage.removeItem('github_token');
+    showToast('Token do GitHub removido deste navegador.');
+  }catch(err){
+    console.error(err);
+    alert('Não foi possível remover o token.');
+  }
+}
+
+async function salvarAlteracoes() {
+  let token = localStorage.getItem('github_token');
+
+  if (!token) {
+    token = prompt('Cole seu token do GitHub:');
+    if (!token) return;
+    localStorage.setItem('github_token', token);
+  }
+
+  const OWNER = 'DigiThree-Planejamentos';
+  const REPO = 'calendario-acervo-dudu';
+  const BRANCH = 'main';
+  const PATH = 'index.html';
+
+  try {
+    showToast('Salvando no GitHub...');
+
+    const apiBase = `https://api.github.com/repos/${encodeURIComponent(OWNER)}/${encodeURIComponent(REPO)}/contents/${PATH.split('/').map(encodeURIComponent).join('/')}`;
+
+    let sha = null;
+    const existing = await fetch(`${apiBase}?ref=${encodeURIComponent(BRANCH)}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json'
+      }
+    });
+
+    if (existing.status === 200) {
+      const current = await existing.json();
+      sha = current.sha;
+    } else if (existing.status === 401 || existing.status === 403) {
+      const err = await existing.text();
+      throw new Error('Token inválido ou sem permissão. ' + err);
+    } else if (existing.status !== 404) {
+      const err = await existing.text();
+      throw new Error('Erro ao buscar arquivo: ' + err);
+    }
+
+    const html = buildPersistentHtml();
+    const body = {
+      message: 'Atualização via site',
+      content: utf8ToBase64(html),
+      branch: BRANCH
+    };
+    if (sha) body.sha = sha;
+
+    const update = await fetch(apiBase, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!update.ok) {
+      const err = await update.text();
+      throw new Error('Erro ao salvar no GitHub: ' + err);
+    }
+
+    showToast('✅ Alterações salvas no GitHub!');
+  } catch (e) {
+    console.error(e);
+    showToast('❌ ' + (e.message || 'Erro ao salvar'));
+  }
+}
+
+function saveSiteData(){ return true; }
+function loadSiteData(){ return false; }
+
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+
+if(window.__PERSISTED_CALENDAR_STATE__){
+  applyCalendarState(window.__PERSISTED_CALENDAR_STATE__);
+}
+
 // ── Init ──
 buildMonthNav();
 renderAll();
@@ -1438,217 +1659,7 @@ const observer = new IntersectionObserver((entries)=>{
   });
 },{threshold:0.15});
 document.querySelectorAll('.month-block').forEach(el=>observer.observe(el));
-
-// ─────────────────────────────────────────────
-//  PERSISTÊNCIA LOCAL DO SITE
-// ─────────────────────────────────────────────
-const STORAGE_KEY = 'calendario_editorial_acervo_dudu_abril_2026';
-
-function collectHeaderData(){
-  return {
-    hdrClient: document.getElementById('hdrClient')?.innerHTML || '',
-    hdrYear: document.getElementById('hdrYear')?.innerHTML || '',
-    hdrSub: document.getElementById('hdrSub')?.innerHTML || ''
-  };
-}
-
-function applyHeaderData(data){
-  if(!data) return;
-  if(typeof data.hdrClient === 'string' && document.getElementById('hdrClient')) document.getElementById('hdrClient').innerHTML = data.hdrClient;
-  if(typeof data.hdrYear === 'string' && document.getElementById('hdrYear')) document.getElementById('hdrYear').innerHTML = data.hdrYear;
-  if(typeof data.hdrSub === 'string' && document.getElementById('hdrSub')) document.getElementById('hdrSub').innerHTML = data.hdrSub;
-}
-
-function collectMonthNotes(){
-  const out = {};
-  document.querySelectorAll('.month-notes[data-month]').forEach(el => {
-    out[el.dataset.month] = el.innerHTML;
-  });
-  return out;
-}
-
-function applyMonthNotes(notes){
-  if(!notes) return;
-  document.querySelectorAll('.month-notes[data-month]').forEach(el => {
-    const val = notes[el.dataset.month];
-    if(typeof val === 'string') el.innerHTML = val;
-  });
-}
-
-function saveSiteData(showMsg=true){
-  try{
-    const payload = {
-      header: collectHeaderData(),
-      monthNotes: collectMonthNotes(),
-      posts: POSTS,
-      planData: PLAN_DATA,
-      monthsConfig: MONTHS_CONFIG.map(m => ({
-        month: m.month,
-        notes: m.notes || '',
-        special: m.special || {}
-      })),
-      savedAt: new Date().toISOString()
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    if(showMsg && typeof showToast === 'function') showToast('Alterações salvas neste navegador.');
-  }catch(err){
-    console.error(err);
-    alert('Não foi possível salvar neste navegador.');
-  }
-}
-
-function loadSiteData(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return false;
-    const data = JSON.parse(raw);
-
-    if(Array.isArray(data.posts)){
-      POSTS = data.posts.map(p => ({
-        ...p,
-        imgs: p.imgs || [],
-        caption: p.caption || '',
-        descricao: p.descricao || '',
-        imgObs: p.imgObs || '',
-        roteiro: p.roteiro || '',
-        videoLink: p.videoLink || '',
-        slides: p.slides || '',
-        slidesNum: p.slidesNum || '',
-        postado: !!p.postado
-      }));
-    }
-
-    if(data.planData && typeof data.planData === 'object'){
-      PLAN_DATA = data.planData;
-    }
-
-    if(Array.isArray(data.monthsConfig)){
-      data.monthsConfig.forEach(savedMonth => {
-        const found = MONTHS_CONFIG.find(m => m.month === savedMonth.month);
-        if(found){
-          if(typeof savedMonth.notes === 'string') found.notes = savedMonth.notes;
-          if(savedMonth.special && typeof savedMonth.special === 'object') found.special = savedMonth.special;
-        }
-      });
-    }
-
-    if(typeof renderAll === 'function') renderAll();
-    applyHeaderData(data.header);
-    applyMonthNotes(data.monthNotes);
-    return true;
-  }catch(err){
-    console.error(err);
-    return false;
-  }
-}
-
-
-function resetGitHubToken(){
-  try{
-    localStorage.removeItem('github_token');
-    showToast('Token do GitHub removido deste navegador.');
-  }catch(err){
-    console.error(err);
-    alert('Não foi possível remover o token.');
-  }
-}
-
-async function salvarAlteracoes() {
-  let token = localStorage.getItem("github_token");
-
-  if (!token) {
-    token = prompt("Cole seu token do GitHub:");
-    if (!token) return;
-    localStorage.setItem("github_token", token);
-  }
-
-  const OWNER = "DigiThree-Planejamentos";
-  const REPO = "calendario-acervo-dudu";
-  const BRANCH = "main";
-  const PATH = "index.html";
-
-  try {
-    const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json"
-      }
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error("Erro ao buscar arquivo: " + (err.message || res.status));
-    }
-
-    const data = await res.json();
-
-    const html = document.documentElement.outerHTML;
-    const content = btoa(unescape(encodeURIComponent(html)));
-
-    const update = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json"
-      },
-      body: JSON.stringify({
-        message: "Atualização via site",
-        content: content,
-        sha: data.sha,
-        branch: BRANCH
-      })
-    });
-
-    if (!update.ok) {
-      const err = await update.json().catch(() => ({}));
-      throw new Error(err.message || ("Falha ao salvar (" + update.status + ")"));
-    }
-
-    showToast("✅ Alterações salvas no GitHub!");
-
-  } catch (e) {
-    console.error(e);
-    showToast("❌ Erro: " + e.message);
-  }
-}
-
-
-// Compatibilidade com o botão antigo
-function exportHTML(){
-  saveSiteData(true);
-}
-
-document.addEventListener('input', function(e){
-  if(
-    e.target.matches('[contenteditable="true"]') ||
-    e.target.matches('.plan-input') ||
-    e.target.matches('.post-title') ||
-    e.target.matches('.month-notes')
-  ){
-    saveSiteData(false);
-  }
-});
-
-document.addEventListener('blur', function(e){
-  if(
-    e.target.matches('[contenteditable="true"]') ||
-    e.target.matches('.plan-input') ||
-    e.target.matches('.post-title') ||
-    e.target.matches('.month-notes')
-  ){
-    saveSiteData(false);
-  }
-}, true);
-
-window.addEventListener('beforeunload', function(){
-  try { saveSiteData(false); } catch(e) {}
-});
-
-setTimeout(function(){
-  loadSiteData();
-}, 0);
-
-</script><input type="file" accept="image/*" multiple="" style="display: none;"><input type="file" accept="image/*" multiple="" style="display: none;">
+</script>
 
 
 </body></html>
