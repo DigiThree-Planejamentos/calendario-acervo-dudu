@@ -240,7 +240,8 @@
 <div class="toolbar">
   <span class="toolbar-label">Ações:</span>
   <button class="btn btn-cyan" onclick="window.print()">🖨 Imprimir</button>
-  <button class="btn btn-ghost" onclick="saveSiteData()">💾 Salvar no site</button>
+  <button class="btn btn-cyan" onclick="salvarAlteracoes()">💾 Salvar alterações</button>
+  <button class="btn btn-ghost" onclick="resetGitHubToken()">🔐 Token GitHub</button>
   <button class="btn btn-ghost" id="editModeBtn" onclick="toggleEditMode()">✏️ Modo Edição</button>
   <button class="btn btn-ghost" onclick="openDatasModal()">🗓 Datas Comemorativas</button>
   <div class="month-nav" id="monthNav"></div>
@@ -981,6 +982,77 @@ function loadSiteData(){
     return false;
   }
 }
+
+
+function resetGitHubToken(){
+  try{
+    localStorage.removeItem('github_token');
+    showToast('Token do GitHub removido deste navegador.');
+  }catch(err){
+    console.error(err);
+    alert('Não foi possível remover o token.');
+  }
+}
+
+async function salvarAlteracoes() {
+  let token = localStorage.getItem("github_token");
+
+  if (!token) {
+    token = prompt("Cole seu token do GitHub:");
+    if (!token) return;
+    localStorage.setItem("github_token", token);
+  }
+
+  const OWNER = "DigiThree-Planejamentos";
+  const REPO = "calendario-acervo-dudu";
+  const BRANCH = "main";
+  const PATH = "index.html";
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json"
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error("Erro ao buscar arquivo: " + (err.message || res.status));
+    }
+
+    const data = await res.json();
+
+    const html = document.documentElement.outerHTML;
+    const content = btoa(unescape(encodeURIComponent(html)));
+
+    const update = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json"
+      },
+      body: JSON.stringify({
+        message: "Atualização via site",
+        content: content,
+        sha: data.sha,
+        branch: BRANCH
+      })
+    });
+
+    if (!update.ok) {
+      const err = await update.json().catch(() => ({}));
+      throw new Error(err.message || ("Falha ao salvar (" + update.status + ")"));
+    }
+
+    showToast("✅ Alterações salvas no GitHub!");
+
+  } catch (e) {
+    console.error(e);
+    showToast("❌ Erro: " + e.message);
+  }
+}
+
 
 // Compatibilidade com o botão antigo
 function exportHTML(){
