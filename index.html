@@ -242,16 +242,16 @@
   <button class="btn btn-ghost" onclick="resetGitHubToken()">🔐 Token GitHub</button>
   <button class="btn btn-ghost" id="editModeBtn" onclick="toggleEditMode()">✏️ Modo Edição</button>
   <button class="btn btn-ghost" onclick="openDatasModal()">🗓 Datas Comemorativas</button>
-  <div class="month-nav" id="monthNav"><button class="month-btn" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button><button class="month-btn" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button></div>
+  <div class="month-nav" id="monthNav"><button class="month-btn active" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button></div>
 </div>
 
 <div class="stats-bar">
-  <div class="stat-pill"><div class="num" style="color:var(--navy)" id="statTotal">14</div><div class="lbl">Total Posts</div></div>
+  <div class="stat-pill"><div class="num" style="color:var(--navy)" id="statTotal">13</div><div class="lbl">Total Posts</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--arte)" id="statArte">1</div><div class="lbl">Artes</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--foto)" id="statFoto">0</div><div class="lbl">Fotos</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--story)" id="statStory">5</div><div class="lbl">Stories</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--reels)" id="statReels">0</div><div class="lbl">Reels</div></div>
-  <div class="stat-pill"><div class="num" style="color:var(--carrossel)" id="statCarrossel">8</div><div class="lbl">Carrosseis</div></div>
+  <div class="stat-pill"><div class="num" style="color:var(--carrossel)" id="statCarrossel">7</div><div class="lbl">Carrosseis</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--pend-brd)" id="statPend">0</div><div class="lbl">Pendentes</div></div>
   <div class="stat-pill"><div class="num" style="color:#059669" id="statPostado">0</div><div class="lbl">Postados</div></div>
 </div>
@@ -577,19 +577,7 @@
         <textarea class="plan-input" style="min-height:48px;resize:vertical" placeholder="Anotações livres, pendências, decisões, reuniões, contatos…" onchange="savePlanField(5,'observacoes',this.value)"></textarea>
       </div>
     </div>
-  </div><div class="cal-grid-outer"><div class="cal-dow"><div class="cal-dow-cell wknd">Dom</div><div class="cal-dow-cell">Seg</div><div class="cal-dow-cell">Ter</div><div class="cal-dow-cell">Qua</div><div class="cal-dow-cell">Qui</div><div class="cal-dow-cell">Sex</div><div class="cal-dow-cell wknd">Sáb</div></div><div class="cal-weeks"><div class="cal-week"><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day" data-day="1"><div class="day-num">1</div>
-            <div class="post-card carrossel" onclick="openModal(4,1)">
-              <div class="card-actions">
-                <button class="card-btn" onclick="event.stopPropagation();togglePostado(4,1)" title="Toggle postado">✅</button>
-                <button class="card-btn" onclick="event.stopPropagation();openModal(4,1)">✏️</button>
-                <button class="card-btn" onclick="event.stopPropagation();deletePostByKey(4,1)">🗑</button>
-              </div>
-              <div class="post-type-tag">🖼 Carrossel</div>
-              
-              <div class="post-title" contenteditable="true" spellcheck="false" onclick="event.stopPropagation()" onblur="updateTitle(4,1,this.innerText)">A trajetória do Mais Querido</div>
-              
-              <div class="card-gallery"><button class="add-thumb-btn" onclick="event.stopPropagation();triggerCardImg(4,1)" title="Adicionar foto">＋</button></div>
-            </div></div><div class="cal-day wknd-col" data-day="2"><div class="day-num">2</div><button class="add-post-btn" onclick="openModal(4,2,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="3"><div class="day-num">3</div><button class="add-post-btn" onclick="openModal(4,3,true)">＋ post</button></div><div class="cal-day" data-day="4"><div class="day-num">4</div><button class="add-post-btn" onclick="openModal(4,4,true)">＋ post</button></div><div class="cal-day" data-day="5"><div class="day-num">5</div><button class="add-post-btn" onclick="openModal(4,5,true)">＋ post</button></div><div class="cal-day" data-day="6"><div class="day-num">6</div><button class="add-post-btn" onclick="openModal(4,6,true)">＋ post</button></div><div class="cal-day" data-day="7"><div class="day-num">7</div><button class="add-post-btn" onclick="openModal(4,7,true)">＋ post</button></div><div class="cal-day" data-day="8"><div class="day-num">8</div><button class="add-post-btn" onclick="openModal(4,8,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="9"><div class="day-num">9</div><button class="add-post-btn" onclick="openModal(4,9,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="10"><div class="day-num">10</div><div class="special-label">💐 Dia das Mães</div><button class="add-post-btn" onclick="openModal(4,10,true)">＋ post</button></div><div class="cal-day" data-day="11"><div class="day-num">11</div><button class="add-post-btn" onclick="openModal(4,11,true)">＋ post</button></div><div class="cal-day" data-day="12"><div class="day-num">12</div><button class="add-post-btn" onclick="openModal(4,12,true)">＋ post</button></div><div class="cal-day" data-day="13"><div class="day-num">13</div><button class="add-post-btn" onclick="openModal(4,13,true)">＋ post</button></div><div class="cal-day" data-day="14"><div class="day-num">14</div><button class="add-post-btn" onclick="openModal(4,14,true)">＋ post</button></div><div class="cal-day" data-day="15"><div class="day-num">15</div><button class="add-post-btn" onclick="openModal(4,15,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="16"><div class="day-num">16</div><button class="add-post-btn" onclick="openModal(4,16,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="17"><div class="day-num">17</div><button class="add-post-btn" onclick="openModal(4,17,true)">＋ post</button></div><div class="cal-day" data-day="18"><div class="day-num">18</div><button class="add-post-btn" onclick="openModal(4,18,true)">＋ post</button></div><div class="cal-day" data-day="19"><div class="day-num">19</div><button class="add-post-btn" onclick="openModal(4,19,true)">＋ post</button></div><div class="cal-day" data-day="20"><div class="day-num">20</div><button class="add-post-btn" onclick="openModal(4,20,true)">＋ post</button></div><div class="cal-day" data-day="21"><div class="day-num">21</div><button class="add-post-btn" onclick="openModal(4,21,true)">＋ post</button></div><div class="cal-day" data-day="22"><div class="day-num">22</div><button class="add-post-btn" onclick="openModal(4,22,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="23"><div class="day-num">23</div><button class="add-post-btn" onclick="openModal(4,23,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="24"><div class="day-num">24</div><button class="add-post-btn" onclick="openModal(4,24,true)">＋ post</button></div><div class="cal-day" data-day="25"><div class="day-num">25</div><button class="add-post-btn" onclick="openModal(4,25,true)">＋ post</button></div><div class="cal-day" data-day="26"><div class="day-num">26</div><button class="add-post-btn" onclick="openModal(4,26,true)">＋ post</button></div><div class="cal-day" data-day="27"><div class="day-num">27</div><button class="add-post-btn" onclick="openModal(4,27,true)">＋ post</button></div><div class="cal-day" data-day="28"><div class="day-num">28</div><button class="add-post-btn" onclick="openModal(4,28,true)">＋ post</button></div><div class="cal-day" data-day="29"><div class="day-num">29</div><button class="add-post-btn" onclick="openModal(4,29,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="30"><div class="day-num">30</div><button class="add-post-btn" onclick="openModal(4,30,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="31"><div class="day-num">31</div><div class="special-label">🟡 Fim Maio Amarelo</div><button class="add-post-btn" onclick="openModal(4,31,true)">＋ post</button></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div></div></div></div></div><div class="month-block" id="month-5"><div class="month-header"><div class="month-title">Junho <em>2026</em></div><div class="month-badge">Mês 6</div></div><div class="month-notes" contenteditable="true" data-month="6" placeholder="Descreva a campanha do mês, promoções, objetivos, datas importantes…"></div><div class="plan-panel">
+  </div><div class="cal-grid-outer"><div class="cal-dow"><div class="cal-dow-cell wknd">Dom</div><div class="cal-dow-cell">Seg</div><div class="cal-dow-cell">Ter</div><div class="cal-dow-cell">Qua</div><div class="cal-dow-cell">Qui</div><div class="cal-dow-cell">Sex</div><div class="cal-dow-cell wknd">Sáb</div></div><div class="cal-weeks"><div class="cal-week"><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day" data-day="1"><div class="day-num">1</div><button class="add-post-btn" onclick="openModal(4,1,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="2"><div class="day-num">2</div><button class="add-post-btn" onclick="openModal(4,2,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="3"><div class="day-num">3</div><button class="add-post-btn" onclick="openModal(4,3,true)">＋ post</button></div><div class="cal-day" data-day="4"><div class="day-num">4</div><button class="add-post-btn" onclick="openModal(4,4,true)">＋ post</button></div><div class="cal-day" data-day="5"><div class="day-num">5</div><button class="add-post-btn" onclick="openModal(4,5,true)">＋ post</button></div><div class="cal-day" data-day="6"><div class="day-num">6</div><button class="add-post-btn" onclick="openModal(4,6,true)">＋ post</button></div><div class="cal-day" data-day="7"><div class="day-num">7</div><button class="add-post-btn" onclick="openModal(4,7,true)">＋ post</button></div><div class="cal-day" data-day="8"><div class="day-num">8</div><button class="add-post-btn" onclick="openModal(4,8,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="9"><div class="day-num">9</div><button class="add-post-btn" onclick="openModal(4,9,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="10"><div class="day-num">10</div><div class="special-label">💐 Dia das Mães</div><button class="add-post-btn" onclick="openModal(4,10,true)">＋ post</button></div><div class="cal-day" data-day="11"><div class="day-num">11</div><button class="add-post-btn" onclick="openModal(4,11,true)">＋ post</button></div><div class="cal-day" data-day="12"><div class="day-num">12</div><button class="add-post-btn" onclick="openModal(4,12,true)">＋ post</button></div><div class="cal-day" data-day="13"><div class="day-num">13</div><button class="add-post-btn" onclick="openModal(4,13,true)">＋ post</button></div><div class="cal-day" data-day="14"><div class="day-num">14</div><button class="add-post-btn" onclick="openModal(4,14,true)">＋ post</button></div><div class="cal-day" data-day="15"><div class="day-num">15</div><button class="add-post-btn" onclick="openModal(4,15,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="16"><div class="day-num">16</div><button class="add-post-btn" onclick="openModal(4,16,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="17"><div class="day-num">17</div><button class="add-post-btn" onclick="openModal(4,17,true)">＋ post</button></div><div class="cal-day" data-day="18"><div class="day-num">18</div><button class="add-post-btn" onclick="openModal(4,18,true)">＋ post</button></div><div class="cal-day" data-day="19"><div class="day-num">19</div><button class="add-post-btn" onclick="openModal(4,19,true)">＋ post</button></div><div class="cal-day" data-day="20"><div class="day-num">20</div><button class="add-post-btn" onclick="openModal(4,20,true)">＋ post</button></div><div class="cal-day" data-day="21"><div class="day-num">21</div><button class="add-post-btn" onclick="openModal(4,21,true)">＋ post</button></div><div class="cal-day" data-day="22"><div class="day-num">22</div><button class="add-post-btn" onclick="openModal(4,22,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="23"><div class="day-num">23</div><button class="add-post-btn" onclick="openModal(4,23,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="24"><div class="day-num">24</div><button class="add-post-btn" onclick="openModal(4,24,true)">＋ post</button></div><div class="cal-day" data-day="25"><div class="day-num">25</div><button class="add-post-btn" onclick="openModal(4,25,true)">＋ post</button></div><div class="cal-day" data-day="26"><div class="day-num">26</div><button class="add-post-btn" onclick="openModal(4,26,true)">＋ post</button></div><div class="cal-day" data-day="27"><div class="day-num">27</div><button class="add-post-btn" onclick="openModal(4,27,true)">＋ post</button></div><div class="cal-day" data-day="28"><div class="day-num">28</div><button class="add-post-btn" onclick="openModal(4,28,true)">＋ post</button></div><div class="cal-day" data-day="29"><div class="day-num">29</div><button class="add-post-btn" onclick="openModal(4,29,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="30"><div class="day-num">30</div><button class="add-post-btn" onclick="openModal(4,30,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="31"><div class="day-num">31</div><div class="special-label">🟡 Fim Maio Amarelo</div><button class="add-post-btn" onclick="openModal(4,31,true)">＋ post</button></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div></div></div></div></div><div class="month-block" id="month-5"><div class="month-header"><div class="month-title">Junho <em>2026</em></div><div class="month-badge">Mês 6</div></div><div class="month-notes" contenteditable="true" data-month="6" placeholder="Descreva a campanha do mês, promoções, objetivos, datas importantes…"></div><div class="plan-panel">
     <div class="plan-header-row">
       <span class="plan-icon">📋</span>
       <span>Planejamento do Mês</span>
@@ -941,7 +929,7 @@ Slide 2: …" style="min-height:160px"></textarea>
   </div>
 </div>
 
-<div class="toast" id="toast">Token do GitHub removido deste navegador.</div>
+<div class="toast" id="toast">Salvando no GitHub...</div>
 
 <script>
 // ─────────────────────────────────────────────
@@ -1004,13 +992,15 @@ function updateStats(){
 
 // ── Build Month Nav ──
 function buildMonthNav(){
-  const nav=document.getElementById('monthNav');
+  const nav = document.getElementById('monthNav');
+  if(!nav) return;
+  nav.innerHTML = '';
   MONTHS_CONFIG.forEach((mc,i)=>{
-    const btn=document.createElement('button');
-    btn.className='month-btn';
-    btn.textContent=MONTH_NAMES[mc.month-1].substring(0,3);
-    btn.onclick=()=>scrollToMonth(i);
-    btn.id='mnav'+i;
+    const btn = document.createElement('button');
+    btn.className = 'month-btn';
+    btn.textContent = MONTH_NAMES[mc.month-1].substring(0,3);
+    btn.onclick = ()=>scrollToMonth(i);
+    btn.id = 'mnav' + i;
     nav.appendChild(btn);
   });
 }
@@ -1518,148 +1508,10 @@ function applyCalendarState(state){
 function upsertPersistedStatePatch(html, state){
   const patch = `
 <script id="persisted-calendar-state">
-window.__PERSISTED_CALENDAR_STATE__ = ${jsonForInlineScript(state)};
+window.__PERSISTED_CALENDAR_STATE__ = {"posts":[{"month":4,"day":2,"type":"carrossel","title":"Duda #10","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"6 slides","slides":"Slide 1: 🏀 DUDA / 🔥 MENTE DO FLAMENGO / Você lembra dele? 👀\n\nSlide 2: 🎯 Duda Machado / Um dos armadores que marcaram o Flamengo no início do NBB. / 📅 Por volta de 2010 / O Flamengo começava a se consolidar no basquete nacional / E Duda era peça importante nesse processo.\n\nSlide 3: 🎯 Estilo de jogo / ✔ Inteligente / ✔ Bom arremesso / ✔ Experiente / ✔ Decisivo quando precisava\n\nSlide 4: 🏆 Parte de um momento importante / Campeão do NBB 2008/2009 / Base do time que seguiu forte nos anos seguintes.\n\nSlide 5: 🔥 Nem sempre o mais falado… / Mas essencial dentro de quadra / Um verdadeiro líder silencioso.\n\nSlide 6: 🏀 UM MANTO DA HISTÓRIA / 📦 Camisa do Flamengo (época do Duda) / 🔥 Disponível em nosso site","descricao":"Homenagem ao armador Duda Machado, peça importante do Flamengo no início do NBB. Carrossel narrativo que apresenta o jogador, seu estilo de jogo e a importância histórica, fechando com CTA de venda da camisa da época.","imgObs":"Slides em fundo escuro (preto/vermelho escuro). Tipografia forte nos destaques. Usar fotos da camisa do acervo nos slides de venda. Emojis de basquete como elemento gráfico. Slide final com foto da camisa + selo Disponível no site.","roteiro":"","caption":"Raiz reconhece 👇\n\n🏀 Duda Machado\n\nUm dos nomes importantes do Flamengo no início do NBB, responsável por dar ritmo, organização e liderança dentro de quadra.\n\nNem sempre o mais falado…\nMas fundamental para a construção do Flamengo forte no basquete.\n\nE agora você pode ter um pedaço dessa história 🔥\n\n📦 Camisa disponível em nosso site\n🔗 Link na bio"},{"month":4,"day":4,"type":"story","title":"Story: Duda #10","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"","slides":"","descricao":"Story de reforço da camisa Duda — visual vertical com foto da camisa e chamada para o site.","imgObs":"Story vertical, fundo escuro com textura. Foto da camisa ao centro com leve sombra. Tipografia limpa, hierarquia clara do topo para baixo.\n\nTopo: 🏀 RAIZ DO NBB\nCentro: Duda\nSubtexto: Um dos nomes da base / do Flamengo no basquete moderno\nComplemento: Camisa histórica 2010\nCTA: 🔗 Link na bio","roteiro":"","caption":""},{"month":4,"day":6,"type":"carrossel","title":"Rei do Rio","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"6 slides","slides":"Slide 1: 👑 REI DO RIO / 🏆 PENTA TRI / 🔴⚫ Flamengo\n\nSlide 2: Você sabe o que é o 👑 Rei do Rio? / É o título simbólico de quem domina o futebol carioca. / E em 2009… o Flamengo provou isso dentro de campo 🔥\n\nSlide 3: Mas afinal… o que é PENTA TRI? 🤔 / 🏆 5 vezes campeão / 🏆🏆🏆 em sequência (TRI) / Ou seja: 5 tricampeonatos estaduais na história!\n\nSlide 4: Em 2009 o Mengão: / 🔥 Chegou ao 31º Carioca / 🔥 Fez história no Rio / 🔥 Se consolidou como o maior / E carimbou: 👑 REI DO RIO\n\nSlide 5: O troféu Rei do Rio não é oficial… / Mas virou símbolo de uma era / 🗺️ Formato do RJ / 🔴⚫ Cores do Flamengo / 👑 Marca da hegemonia\n\nSlide 6: E aí… tem discussão? 👀 / 🔥 O Flamengo é o verdadeiro 👑 REI DO RIO?","descricao":"Explicar o que é o título simbólico Rei do Rio e o conceito de Penta Tri, contextualizando a conquista de 2009.","imgObs":"Fundo escuro com detalhes dourados. Destaque no troféu (formato do RJ com cores rubro-negras e coroa). Tipografia impactante. Slide final com provocação visual para engajamento.","roteiro":"","caption":"👑 REI DO RIO E PENTA TRI 🔴⚫\n\nEm 2009, o Flamengo não ganhou só um título…\nganhou STATUS.\n\nForam anos de domínio no futebol carioca,\ncom 5 tricampeonatos na história 🏆\n\nE pra marcar isso, nasceu o símbolo:\n👑 Rei do Rio\n\nNão é só taça…\né respeito, é história, é tradição 🔥\n\nE aí… concorda ou tem discussão? 👀👇"},{"month":4,"day":9,"type":"carrossel","title":"Basquete 2013 — Medalha NBB","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"5 slides","slides":"Slide 1: 🏀 Flamengo Campeão 2013 / 🥇 Medalha Oficial do NBB\n\nSlide 2: Em 2013, o Flamengo conquistava seu primeiro título do NBB, marcando o início de uma era dominante no basquete brasileiro.\n\nSlide 3: 🏀 Final contra Uberlândia / 📊 Vitória por 77 x 70 / ⭐ Show de Marcelinho Machado (MVP)\n\nSlide 4: Essa medalha representa: / 🏆 O início de uma geração vencedora / 🔥 Um dos momentos mais marcantes do basquete rubro-negro\n\nSlide 5: ⚠️ Item raro e colecionável / Para quem valoriza a história do Flamengo","descricao":"Apresentar a medalha oficial do NBB 2013, primeiro título do Flamengo no campeonato.","imgObs":"Fundo escuro, destaque metálico/dourado remetendo à medalha. Fotos reais da medalha nos slides de venda. Tipografia forte. Slide de exclusividade com selo Item raro.","roteiro":"","caption":"Quer ter um pedaço da história do Flamengo nas mãos? 🏀🔥\n\nEm 2013, o Mengão conquistava seu primeiro NBB e iniciava uma era histórica no basquete… e essa medalha faz parte desse momento! 🥇\n\nItem raro, original e perfeito para colecionadores apaixonados pelo clube ❤️🖤\n\n📦 Disponível em nosso site\n🔗 Link na bio"},{"month":4,"day":13,"type":"carrossel","title":"Maestro Junior","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"5 slides","slides":"Slide 1: 🏆 MAESTRO JÚNIOR / 🔥 ÍDOLO ETERNO DO FLAMENGO / 🛒 MINIATURA DISPONÍVEL\n\nSlide 2: Você conhece a história do Maestro? / 👑 Um dos maiores jogadores da história do Flamengo / 🎯 Técnica, liderança e visão absurda\n\nSlide 3: Revelado pelo Flamengo em 1974 / Começou como lateral… / Virou um dos mais completos da história. / 🔥 Protagonista da geração mais lendária / 🏆 Libertadores 1981 / 🌍 Mundial 1981 / 🏆 4 Brasileiros / Ao lado de Zico, fez história!\n\nSlide 4: 🎩 O apelido não é à toa... / Virou Maestro por comandar o jogo / Com classe, inteligência e categoria. / 🌍 Brilhou na Europa / Jogou no Torino / E voltou ainda maior para o Flamengo\n\nSlide 5: 🏆 Último ato de ídolo / Campeão Brasileiro em 1992 / ⚽ Marcando gol na final! / Lenda até o fim.","descricao":"Storytelling completo sobre Maestro Júnior — da revelação em 1974 até o título de 1992. Fecha com venda da miniatura.","imgObs":"Visual premium/retrô. Fundo escuro com detalhes dourados. Slides com tipografia elegante. Usar fotos da miniatura nos slides finais.","roteiro":"","caption":"Se você é flamenguista de verdade, você respeita esse nome 👇\n\n🏆 Maestro Júnior\n\nUm dos maiores ídolos da história do Flamengo, dono de uma classe absurda e protagonista da geração mais vitoriosa do clube.\n\nE agora você pode ter esse ídolo na sua coleção ❤️🖤\n\n📦 Miniatura disponível em nosso site\n🔗 Link na bio"},{"month":4,"day":15,"type":"story","title":"Story: Maestro Junior","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"","slides":"","descricao":"Story de reforço da miniatura Maestro Júnior.","imgObs":"Story vertical, visual premium. Foto da miniatura em destaque. Fundo escuro. Tipografia elegante.\n\nTopo: 🔥 DISPONÍVEL NO SITE\nCentro: 🏆 Maestro Júnior - Miniatura\nSubtexto: Um dos maiores ídolos da história do Flamengo\nCTA: 🔗 Link na bio","roteiro":"","caption":""},{"month":4,"day":17,"type":"carrossel","title":"Benite #8","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"5 slides","slides":"Slide 1: 🔥 BENITE #8 / 🏀 FLAMENGO BASQUETE / 🛒 CAMISA DISPONÍVEL\n\nSlide 2: Você lembra desse nome? / 🎯 Benite #8 / Um dos grandes nomes da retomada do basquete do Flamengo\n\nSlide 3: Chegou na temporada 2012/2013 🔥 / E já foi decisivo logo de cara! / 🏆 Campeão do NBB 2012/2013 / Um título que marcou o retorno do Flamengo ao topo\n\nSlide 4: 🎯 Especialista em bolas de 3 / Frio. Decisivo. Letal. / Chamava a responsabilidade nos momentos finais / 🌍 Também fez parte: 🏆 Liga das Américas 2014 / Colocando o Flamengo no topo do continente\n\nSlide 5: 🔥 UM ÍDOLO, UMA HISTÓRIA / 👕 Camisa Benite #8 disponível / ⚠️ Peça única / limitada!","descricao":"Homenagem a Benite, peça-chave do título do NBB 2012/2013 e da Liga das Américas 2014.","imgObs":"Fundo escuro, elementos de basquete. Destaque na camisa #8 nos slides finais. Tipografia forte com detalhes em vermelho.","roteiro":"","caption":"Se você acompanhou o Flamengo no basquete, esse nome arrepia 👇\n\n🏀 Benite #8\n\nUm dos grandes responsáveis pela volta do Mengão ao topo, campeão do NBB e peça chave de uma geração histórica.\n\nAgora você pode ter um pedaço dessa história nas mãos 🔴⚫\n\n👕 Camisa do Benite disponível em nosso site\n🔗 Link na bio"},{"month":4,"day":19,"type":"story","title":"Story: Benite #8","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"","slides":"","descricao":"Story de reforço da camisa Benite #8.","imgObs":"Story vertical, fundo escuro com elementos de basquete. Foto da camisa #8 em destaque.\n\nTopo: 🏀 ÍDOLO DO NBB\nCentro: Benite #8\nSubtexto: Peça da era vitoriosa do Flamengo\nCTA: 🔗 Link na bio","roteiro":"","caption":""},{"month":4,"day":21,"type":"carrossel","title":"Lygia Cossenza","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"6 slides","slides":"Slide 1: 🏐 LYGIA COSSENZA / 📜 FLAMENGO ANOS 50\n\nSlide 2: Você conhece esse nome? 👀 / Uma das pioneiras do vôlei feminino do Flamengo. / 📅 Década de 1950 / Uma época em que o vôlei ainda crescia no Brasil\n\nSlide 3: 🏐 Dentro de quadra / Lygia representava o Flamengo com técnica, dedicação e liderança.\n\nSlide 4: 🏆 Importância histórica / Ela fez parte da construção do vôlei e do esporte feminino dentro do clube.\n\nSlide 5: 📜 Um nome que poucos conhecem… Mas que merece ser lembrado como parte da história do Flamengo.\n\nSlide 6: 🔥 O FLAMENGO VAI MUITO ALÉM DO FUTEBOL / E sua história é construída por grandes nomes como Lygia Cossenza.","descricao":"Resgate da memória de Lygia Cossenza, pioneira do vôlei feminino do Flamengo nos anos 50.","imgObs":"Estética vintage — tons de preto e branco, bege envelhecido, efeito granulado. Fonte serifada/elegante. Selo Peça histórica. Tom documental e respeitoso.","roteiro":"","caption":"Nem todo ídolo foi televisionado… 👇🏽\n\n🏐 Lygia Cossenza\n\nUm nome importante do vôlei feminino do Flamengo na década de 1950, em uma época onde o esporte ainda estava começando no Brasil.\n\nEla representa uma geração de atletas que ajudaram a construir a história do clube muito antes da fama, da mídia e da estrutura atual.\n\n📜 Respeitar o passado é entender a grandeza do Flamengo.\n\nE agora você pode ter um pedaço dessa história 👇🏽\n👕 Camisa histórica do Flamengo\n📦 Disponível em nosso site\n🔗 Link na bio"},{"month":4,"day":23,"type":"story","title":"Story: Lygia Cossenza","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"","slides":"","descricao":"Story de reforço da camisa histórica Lygia Cossenza.","imgObs":"Story vertical com estética vintage. Fundo preto e branco ou bege envelhecido. Efeito granulado. Fonte serifada elegante.\n\nTopo: 📜 RELÍQUIA DO FLAMENGO\nCentro: 🏐 Camisa histórica / Lygia Cossenza\nSubtexto: Uma homenagem ao vôlei feminino dos anos 50\nRodapé: 👕 Peça rara disponível / 📦 Chama no direct","roteiro":"","caption":""},{"month":4,"day":27,"type":"story","title":"Story: Rei do Rio","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"","slides":"","descricao":"Story de reforço do troféu Rei do Rio.","imgObs":"Story vertical, fundo escuro com detalhes dourados. Foto do troféu Rei do Rio em destaque.\n\nTopo: ⚠️ ITEM RARO\nCentro: 🏆 Troféu Rei do Rio\nSubtexto: Flamengo 2009 / 👑 Penta + Tri\nCTA: Disponível no site / 🔗 Link na bio","roteiro":"","caption":""},{"month":4,"day":29,"type":"carrossel","title":"Caneca histórica 2002","pending":false,"trafego":false,"postado":false,"imgs":[],"videoLink":"","slidesNum":"3 slides","slides":"Slide 1: ☕ CANECA FLAMENGO / 📜 PEÇA HISTÓRICA / 🔥 DISPONÍVEL\n\nSlide 2: Uma homenagem especial / O Grupo Flamengo de Verdade, fundado em 1944... / Uma peça cheia de significado ❤️🖤\n\nSlide 3: 📅 Ano: 2002 / Uma caneca comemorativa que carrega a história do Flamengo / ☕ Um pedaço da história / 📦 Caneca disponível em nosso site","descricao":"Apresentar a caneca comemorativa de 2002 com homenagem ao Grupo Flamengo de Verdade.","imgObs":"Fotos reais da caneca (frente e verso com inscrição). Fundo escuro, iluminação focada na peça. Visual de vitrine de museu.","roteiro":"","caption":"Para quem valoriza história de verdade 👇🏽\n\n☕ Caneca histórica do Flamengo\n\nUma peça comemorativa de 2002, com homenagem especial ao Grupo Flamengo de Verdade (fundado em 1944).\n\nMais do que uma caneca…\n📜 um item cheio de significado e tradição rubro-negra.\n\n🔥 Ideal para colecionadores\n📦 Disponível em nosso site\n🔗 Link na bio"},{"month":1,"day":5,"type":"arte","title":"teste","caption":"","imgObs":"","roteiro":"","videoLink":"","slides":"","slidesNum":"","pending":false,"postado":false,"trafego":false,"imgs":[]}],"planData":{"1":{},"2":{},"3":{},"4":{},"5":{},"6":{},"7":{},"8":{},"9":{},"10":{},"11":{},"12":{}},"monthConfig":[{"month":1,"notes":"","special":{"1":"🎆 Ano Novo","6":"🏖️ Feriado RJ"}},{"month":2,"notes":"","special":{"16":"🎭 Carnaval","17":"🎭 Carnaval","18":"🎭 Quarta-feira de Cinzas"}},{"month":3,"notes":"","special":{"8":"👩 Dia da Mulher","20":"🌿 Início do Outono"}},{"month":4,"notes":"Acervo Dudu — 14 publicações (7 carrosseis + 7 stories) · @acervodudufla · acervodudu.com.br","special":{"1":"🤥 Dia da Mentira","2":"🧩 Consciência do Autismo","3":"✝️ Sexta-Feira Santa","5":"🐣 Páscoa","6":"🙏 São Benedito","7":"🌍 Dia Mundial da Saúde","8":"🎗️ Combate ao Câncer","13":"💋 Dia do Beijo","14":"☕ Dia Mundial do Café","21":"🇧🇷 Tiradentes","22":"🌍 Dia da Terra","23":"⚔️ São Jorge","24":"🥩 Dia Int. do Churrasco","28":"👵 Dia da Sogra","30":"🎷 Dia Int. do Jazz"}},{"month":5,"notes":"","special":{"10":"💐 Dia das Mães","31":"🟡 Fim Maio Amarelo"}},{"month":6,"notes":"","special":{"5":"🌍 Meio Ambiente","12":"💑 Dia dos Namorados"}},{"month":7,"notes":"","special":{}},{"month":8,"notes":"","special":{"9":"👨 Dia dos Pais"}},{"month":9,"notes":"","special":{"7":"🇧🇷 Independência","15":"🛍️ Dia do Cliente","22":"🌸 Primavera"}},{"month":10,"notes":"","special":{"2":"👶 Dia das Crianças","12":"🇧🇷 N.Sra. Aparecida","31":"🎃 Halloween"}},{"month":11,"notes":"","special":{"2":"✝️ Finados","15":"🇧🇷 Proclamação Rep.","20":"⚫ Black Friday"}},{"month":12,"notes":"","special":{"8":"🎄 Imaculada Conceição","25":"🎄 Natal","31":"🥂 Réveillon"}}],"header":{"client":"Acervo Dudu","year":"2026","sub":"Calendário Editorial · Abril 2026 · @acervodudufla"}};
 if(typeof applyCalendarState === 'function'){ applyCalendarState(window.__PERSISTED_CALENDAR_STATE__); }
-<\/script>
-`;
-  if(/<script id="persisted-calendar-state">[\s\S]*?<\/script>/i.test(html)){
-    return html.replace(/<script id="persisted-calendar-state">[\s\S]*?<\/script>/i, patch.trim());
-  }
-  return html.replace(/<\/body>/i, patch + '</body>');
-}
+</script><input type="file" accept="image/*" multiple="" style="display: none;">
 
-function buildPersistentHtml(){
-  const client = document.getElementById('hdrClient')?.innerHTML || '';
-  const year = document.getElementById('hdrYear')?.innerHTML || '';
-  const sub = document.getElementById('hdrSub')?.innerHTML || '';
-
-  let src = document.documentElement.outerHTML;
-
-  src = src.replace(/(<span contenteditable="true" id="hdrClient"[^>]*>)([\s\S]*?)(<\/span>)/, `$1${client}$3`);
-  src = src.replace(/(<em contenteditable="true" id="hdrYear"[^>]*>)([\s\S]*?)(<\/em>)/, `$1${year}$3`);
-  src = src.replace(/(<span class="sub" contenteditable="true" id="hdrSub"[^>]*>)([\s\S]*?)(<\/span>)/, `$1${sub}$3`);
-
-  src = src.replace(/function buildMonthNav\(\)\{[\s\S]*?\n\}/, `function buildMonthNav(){
-  const nav = document.getElementById('monthNav');
-  if(!nav) return;
-  nav.innerHTML = '';
-  MONTHS_CONFIG.forEach((mc,i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'month-btn';
-    btn.textContent = MONTH_NAMES[mc.month-1].substring(0,3);
-    btn.onclick = ()=>scrollToMonth(i);
-    btn.id = 'mnav' + i;
-    nav.appendChild(btn);
-  });
-}`);
-
-  src = upsertPersistedStatePatch(src, collectCalendarState());
-  return src;
-}
-
-function resetGitHubToken(){
-  try{
-    localStorage.removeItem('github_token');
-    showToast('Token do GitHub removido deste navegador.');
-  }catch(err){
-    console.error(err);
-    alert('Não foi possível remover o token.');
-  }
-}
-
-async function salvarAlteracoes() {
-  let token = localStorage.getItem('github_token');
-
-  if (!token) {
-    token = prompt('Cole seu token do GitHub:');
-    if (!token) return;
-    localStorage.setItem('github_token', token);
-  }
-
-  const OWNER = 'DigiThree-Planejamentos';
-  const REPO = 'calendario-acervo-dudu';
-  const BRANCH = 'main';
-  const PATH = 'index.html';
-
-  try {
-    showToast('Salvando no GitHub...');
-
-    const apiBase = `https://api.github.com/repos/${encodeURIComponent(OWNER)}/${encodeURIComponent(REPO)}/contents/${PATH.split('/').map(encodeURIComponent).join('/')}`;
-
-    let sha = null;
-    const existing = await fetch(`${apiBase}?ref=${encodeURIComponent(BRANCH)}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json'
-      }
-    });
-
-    if (existing.status === 200) {
-      const current = await existing.json();
-      sha = current.sha;
-    } else if (existing.status === 401 || existing.status === 403) {
-      const err = await existing.text();
-      throw new Error('Token inválido ou sem permissão. ' + err);
-    } else if (existing.status !== 404) {
-      const err = await existing.text();
-      throw new Error('Erro ao buscar arquivo: ' + err);
-    }
-
-    const html = buildPersistentHtml();
-    const body = {
-      message: 'Atualização via site',
-      content: utf8ToBase64(html),
-      branch: BRANCH
-    };
-    if (sha) body.sha = sha;
-
-    const update = await fetch(apiBase, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
-
-    if (!update.ok) {
-      const err = await update.text();
-      throw new Error('Erro ao salvar no GitHub: ' + err);
-    }
-
-    showToast('✅ Alterações salvas no GitHub!');
-  } catch (e) {
-    console.error(e);
-    showToast('❌ ' + (e.message || 'Erro ao salvar'));
-  }
-}
-
-function saveSiteData(){ return true; }
-function loadSiteData(){ return false; }
-
-document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
-
-if(window.__PERSISTED_CALENDAR_STATE__){
-  applyCalendarState(window.__PERSISTED_CALENDAR_STATE__);
-}
-
-// ── Init ──
-buildMonthNav();
-renderAll();
-
-// Intersection observer to highlight active month in nav
-const observer = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const id=e.target.id;
-      const idx=parseInt(id.replace('month-',''));
-      document.querySelectorAll('.month-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
-    }
-  });
-},{threshold:0.15});
-document.querySelectorAll('.month-block').forEach(el=>observer.observe(el));
-</script>
 
 
 </body></html>
