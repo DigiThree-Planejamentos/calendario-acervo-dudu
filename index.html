@@ -215,6 +215,7 @@
 
   @media print{.toolbar,.add-post-btn,.card-actions,.add-thumb-btn{display:none!important;}body{background:#fff;}.post-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -239,8 +240,7 @@
   <span class="toolbar-label">Ações:</span>
   <button class="btn btn-cyan" onclick="window.print()">🖨 Imprimir</button>
   <button class="btn btn-cyan" onclick="salvarAlteracoes()">💾 Salvar alterações</button>
-  <button class="btn btn-ghost" onclick="resetGitHubToken()">🔐 Token GitHub</button>
-  <button class="btn btn-ghost" id="editModeBtn" onclick="toggleEditMode()">✏️ Modo Edição</button>
+    <button class="btn btn-ghost" id="editModeBtn" onclick="toggleEditMode()">✏️ Modo Edição</button>
   <button class="btn btn-ghost" onclick="openDatasModal()">🗓 Datas Comemorativas</button>
   <div class="month-nav" id="monthNav"><button class="month-btn active" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button></div>
 </div>
@@ -1411,6 +1411,57 @@ function showToast(msg){
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);
 }
 
+const SUPABASE_URL = 'COLE_SUA_URL_AQUI';
+const SUPABASE_ANON_KEY = 'COLE_SUA_KEY_AQUI';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const CALENDAR_ID = 'acervo-dudu-2026';
+const CALENDAR_NAME = 'Calendário Acervo Dudu';
+
+async function salvarAlteracoes() {
+  const state = collectCalendarState();
+
+  const { error } = await supabase
+    .from('calendarios')
+    .upsert({
+      id: CALENDAR_ID,
+      nome: CALENDAR_NAME,
+      dados: state
+    }, { onConflict: 'id' });
+
+  if (error) {
+    console.error(error);
+    showToast('❌ Erro ao salvar');
+    return;
+  }
+
+  showToast('✅ Salvo com sucesso!');
+}
+
+async function carregarAlteracoes() {
+  const { data, error } = await supabase
+    .from('calendarios')
+    .select('id, nome, dados')
+    .eq('id', CALENDAR_ID)
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    showToast('❌ Erro ao carregar');
+    return;
+  }
+
+  if (data && data.dados) {
+    applyCalendarState(data.dados);
+    renderAll();
+    updateStats();
+    buildMonthNav();
+    showToast('📥 Dados carregados');
+  }
+}
+
+
 document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 
 
@@ -1504,6 +1555,11 @@ function applyCalendarState(state){
     }
   }
 }
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await carregarAlteracoes();
+});
 
 function upsertPersistedStatePatch(html, state){
   const patch = `
